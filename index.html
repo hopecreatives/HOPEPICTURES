@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Electronics Empire Store</title>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      background: #f5f5f5;
+      color: #fff;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #0d2538, #1b6ca8); /* dark blue gradient */
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      animation: slideDown 0.8s ease-out;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #fff;
+      margin-right: 20px;
+      flex-shrink: 0;
+      animation: fadeIn 1s ease-out forwards;
+      opacity: 0;
+      animation-delay: 0.3s;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    /* Search Bar Container */
+    .search-container {
+      flex: 1;
+      position: relative;
+      margin: 0 20px;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 10px 50px 10px 15px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+      transition: box-shadow 0.3s ease;
+    }
+    .search-container input:focus {
+      box-shadow: 0 0 8px rgba(255,255,255,0.8);
+    }
+    .search-container button {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #FF9900;
+      border: none;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .search-container button:hover {
+      background: #e68a00;
+    }
+    /* Navigation Links */
+    nav {
+      display: flex;
+      align-items: center;
+      animation: fadeIn 1s ease-out forwards;
+      animation-delay: 0.5s;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+    }
+    nav ul li {
+      margin-left: 15px;
+    }
+    nav ul li a {
+      color: #fff;
+      font-size: 0.95rem;
+      padding: 5px 8px;
+      transition: background 0.3s ease;
+      border-radius: 4px;
+    }
+    nav ul li a:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .hamburger {
+      display: none;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    /* Mobile Navigation */
+    @media(max-width: 768px) {
+      nav ul {
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        background: #0d2538;
+        flex-direction: column;
+        width: 180px;
+        padding: 15px;
+        display: none;
+        border: 1px solid #1b6ca8;
+        border-radius: 4px;
+      }
+      nav ul li {
+        margin: 10px 0;
+      }
+      .hamburger {
+        display: block;
+      }
+      .search-container {
+        margin: 10px 0;
+      }
+    }
+
+    /* HERO SECTION */
+    .hero {
+      width: 100%;
+      height: 500px;
+      background: url('https://picsum.photos/1920/1080?electronics') center/cover no-repeat;
+      position: relative;
+      margin-top: 70px; /* Offset for fixed header */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 1s ease-out;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      z-index: 1;
+    }
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .hero-content p {
+      font-size: 1.5rem;
+    }
+
+    /* MAIN CONTENT */
+    .main-content {
+      max-width: 1200px;
+      margin: 80px auto 20px;
+      padding: 40px 20px;
+      color: #333;
+    }
+    section {
+      margin-bottom: 60px;
+    }
+    section h2 {
+      text-align: center;
+      font-size: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+      color: #0d2538;
+    }
+
+    /* PRODUCTS SECTION with Sidebar */
+    .products-section {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .sidebar {
+      flex: 0 0 200px;
+      background: #1b6ca8;
+      border: 1px solid #0d2538;
+      border-radius: 4px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      height: fit-content;
+    }
+    .sidebar h3 {
+      font-size: 1.2rem;
+      text-align: center;
+      margin-bottom: 15px;
+      color: #fff;
+    }
+    .filter-list {
+      list-style: none;
+    }
+    .filter-list li {
+      margin-bottom: 10px;
+    }
+    .filter-list li button {
+      width: 100%;
+      background: #FF9900;
+      border: none;
+      color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .filter-list li button:hover,
+    .filter-list li button.active {
+      background: #e68a00;
+    }
+    .products-grid {
+      flex: 1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .product-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 15px;
+      width: calc(33.333% - 20px);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .product-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .product-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: #0d2538;
+    }
+    .product-card p {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+      flex-grow: 1;
+    }
+    .price {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #B12704;
+      margin-bottom: 10px;
+    }
+    .buy-btn {
+      background: #FF9900;
+      color: #fff;
+      padding: 10px;
+      border-radius: 4px;
+      transition: background 0.3s ease;
+      font-size: 0.95rem;
+    }
+    .buy-btn:hover {
+      background: #e68a00;
+    }
+
+    /* ABOUT & CONTACT */
+    .contact-info {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+      color: #333;
+    }
+    .contact-info p {
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    /* FOOTER */
+    footer {
+      background: #0d2538;
+      color: #fff;
+      text-align: center;
+      padding: 15px;
+      margin-top: 30px;
+      border-top: 1px solid #1b6ca8;
+    }
+
+    /* Floating Call & Chat Buttons */
+    .floating-buttons {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 2000;
+    }
+    .floating-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 55px;
+      height: 55px;
+      background: #FF9900;
+      color: #fff;
+      border-radius: 50%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+      transition: background 0.3s ease, transform 0.3s ease;
+      font-size: 1.5rem;
+    }
+    .floating-button:hover {
+      background: #e68a00;
+      transform: scale(1.1);
+    }
+
+    /* Responsive Styles */
+    @media(max-width: 1024px) {
+      .product-card {
+        width: calc(50% - 20px);
+      }
+      .products-section {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        margin-bottom: 20px;
+      }
+    }
+    @media(max-width: 480px) {
+      .product-card {
+        width: 100%;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .search-container {
+        width: 100%;
+        margin: 10px 0;
+      }
+      nav {
+        width: 100%;
+      }
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <div class="logo">Electronics Empire</div>
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" placeholder="Search for laptops, electronics..." id="search-input" />
+      <button id="search-btn"><i class="fas fa-search"></i></button>
+    </div>
+    <!-- Navigation -->
+    <nav>
+      <div class="hamburger" id="hamburger"><i class="fas fa-bars"></i></div>
+      <ul id="nav-menu">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#featured">Featured</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="hero" id="home">
+    <div class="hero-content">
+      <h1>Welcome to Electronics Empire</h1>
+      <p>Your ultimate destination for premium electronics & laptops</p>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <!-- FEATURED SECTION -->
+    <section id="featured">
+      <h2>Featured Electronics</h2>
+      <div class="products-grid">
+        <!-- Example Featured Products -->
+        <div class="product-card" data-category="Featured">
+          <img src="https://picsum.photos/300/300?random=701&laptop" alt="Laptop Pro" />
+          <h3>Laptop Pro 15"</h3>
+          <p>High performance laptop for professionals.</p>
+          <div class="price">$1299.99</div>
+          <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Laptop Pro 15">Buy Now</a>
+        </div>
+        <div class="product-card" data-category="Featured">
+          <img src="https://picsum.photos/300/300?random=702&laptop" alt="Gaming Laptop" />
+          <h3>Gaming Laptop X</h3>
+          <p>Ultimate gaming performance and graphics.</p>
+          <div class="price">$1599.99</div>
+          <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Gaming Laptop X">Buy Now</a>
+        </div>
+        <div class="product-card" data-category="Featured">
+          <img src="https://picsum.photos/300/300?random=703&electronics" alt="Ultrabook Air" />
+          <h3>Ultrabook Air</h3>
+          <p>Slim, light, and powerful for everyday use.</p>
+          <div class="price">$999.99</div>
+          <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Ultrabook Air">Buy Now</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRODUCTS SECTION with Sidebar -->
+    <section id="products">
+      <h2>Our Products</h2>
+      <div class="products-section">
+        <!-- Sidebar Filter -->
+        <aside class="sidebar">
+          <h3>Categories</h3>
+          <ul class="filter-list">
+            <li><button class="filter-btn active" data-filter="all">All</button></li>
+            <li><button class="filter-btn" data-filter="Lights">Lights</button></li>
+            <li><button class="filter-btn" data-filter="Light Stands">Light Stands</button></li>
+            <li><button class="filter-btn" data-filter="Gimbals">Gimbals</button></li>
+            <li><button class="filter-btn" data-filter="Phone Cases">Phone Cases</button></li>
+            <li><button class="filter-btn" data-filter="Earbuds">Earbuds</button></li>
+          </ul>
+        </aside>
+        <!-- Products Grid -->
+        <div class="products-grid">
+          <!-- Category: Lights (5 products) -->
+          <div class="product-card" data-category="Lights">
+            <img src="https://picsum.photos/300/300?random=101&electronics" alt="Amaran 200D" />
+            <h3>Amaran 200D</h3>
+            <p>High-output daylight LED light for studio use.</p>
+            <div class="price">$299.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Amaran 200D">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Lights">
+            <img src="https://picsum.photos/300/300?random=102&electronics" alt="Godox SL60W" />
+            <h3>Godox SL60W</h3>
+            <p>Professional studio LED light with continuous output.</p>
+            <div class="price">$399.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Godox SL60W">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Lights">
+            <img src="https://picsum.photos/300/300?random=103&electronics" alt="Neewer 660 LED" />
+            <h3>Neewer 660 LED</h3>
+            <p>High-performance LED panel for versatile lighting setups.</p>
+            <div class="price">$259.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Neewer 660 LED">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Lights">
+            <img src="https://picsum.photos/300/300?random=104&electronics" alt="Yongnuo YN300" />
+            <h3>Yongnuo YN300</h3>
+            <p>Portable LED light offering great color rendering.</p>
+            <div class="price">$199.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Yongnuo YN300">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Lights">
+            <img src="https://picsum.photos/300/300?random=105&electronics" alt="Aputure Amaran AL-528S" />
+            <h3>Aputure Amaran AL-528S</h3>
+            <p>Versatile LED light with high color accuracy.</p>
+            <div class="price">$349.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Aputure Amaran AL-528S">Buy Now</a>
+          </div>
+          <!-- Category: Light Stands (5 products) -->
+          <div class="product-card" data-category="Light Stands">
+            <img src="https://picsum.photos/300/300?random=201&electronics" alt="Neewer Light Stand" />
+            <h3>Neewer Light Stand</h3>
+            <p>Durable and adjustable light stand for studio setups.</p>
+            <div class="price">$39.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Neewer Light Stand">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Light Stands">
+            <img src="https://picsum.photos/300/300?random=202&electronics" alt="Manfrotto Light Stand" />
+            <h3>Manfrotto Light Stand</h3>
+            <p>Reliable and sturdy light stand for professional use.</p>
+            <div class="price">$59.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Manfrotto Light Stand">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Light Stands">
+            <img src="https://picsum.photos/300/300?random=203&electronics" alt="Impact Light Stand" />
+            <h3>Impact Light Stand</h3>
+            <p>Lightweight yet strong stand for flexible lighting.</p>
+            <div class="price">$29.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Impact Light Stand">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Light Stands">
+            <img src="https://picsum.photos/300/300?random=204&electronics" alt="Godox Light Stand" />
+            <h3>Godox Light Stand</h3>
+            <p>Sturdy stand designed for Godox lighting equipment.</p>
+            <div class="price">$49.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Godox Light Stand">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Light Stands">
+            <img src="https://picsum.photos/300/300?random=205&electronics" alt="Fotodiox Light Stand" />
+            <h3>Fotodiox Light Stand</h3>
+            <p>Reliable light stand offering excellent stability.</p>
+            <div class="price">$34.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Fotodiox Light Stand">Buy Now</a>
+          </div>
+          <!-- Category: Gimbals (5 products) -->
+          <div class="product-card" data-category="Gimbals">
+            <img src="https://picsum.photos/300/300?random=301&electronics" alt="DJI Ronin-S" />
+            <h3>DJI Ronin-S</h3>
+            <p>Professional 3-axis gimbal for cinematic shots.</p>
+            <div class="price">$699.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in DJI Ronin-S">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Gimbals">
+            <img src="https://picsum.photos/300/300?random=302&electronics" alt="Zhiyun Crane 2" />
+            <h3>Zhiyun Crane 2</h3>
+            <p>Advanced gimbal designed for professional filmmakers.</p>
+            <div class="price">$649.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Zhiyun Crane 2">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Gimbals">
+            <img src="https://picsum.photos/300/300?random=303&electronics" alt="Moza Air" />
+            <h3>Moza Air</h3>
+            <p>Lightweight gimbal offering smooth stabilization.</p>
+            <div class="price">$499.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Moza Air">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Gimbals">
+            <img src="https://picsum.photos/300/300?random=304&electronics" alt="FeiyuTech AK4500" />
+            <h3>FeiyuTech AK4500</h3>
+            <p>Robust gimbal for advanced video shooting.</p>
+            <div class="price">$599.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in FeiyuTech AK4500">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Gimbals">
+            <img src="https://picsum.photos/300/300?random=305&electronics" alt="DJI Ronin-SC" />
+            <h3>DJI Ronin-SC</h3>
+            <p>Compact gimbal designed for mirrorless cameras.</p>
+            <div class="price">$439.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in DJI Ronin-SC">Buy Now</a>
+          </div>
+          <!-- Category: Phone Cases (5 products) -->
+          <div class="product-card" data-category="Phone Cases">
+            <img src="https://picsum.photos/300/300?random=401&electronics" alt="iPhone Case" />
+            <h3>iPhone Case</h3>
+            <p>Sleek and durable case designed for iPhone.</p>
+            <div class="price">$19.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in iPhone Case">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Phone Cases">
+            <img src="https://picsum.photos/300/300?random=402&electronics" alt="Samsung Galaxy Case" />
+            <h3>Samsung Galaxy Case</h3>
+            <p>Protective case with stylish design for Galaxy phones.</p>
+            <div class="price">$17.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Samsung Galaxy Case">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Phone Cases">
+            <img src="https://picsum.photos/300/300?random=403&electronics" alt="Google Pixel Case" />
+            <h3>Google Pixel Case</h3>
+            <p>Robust case tailored for Google Pixel devices.</p>
+            <div class="price">$18.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Google Pixel Case">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Phone Cases">
+            <img src="https://picsum.photos/300/300?random=404&electronics" alt="OnePlus Case" />
+            <h3>OnePlus Case</h3>
+            <p>Stylish and slim case for OnePlus smartphones.</p>
+            <div class="price">$16.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in OnePlus Case">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Phone Cases">
+            <img src="https://picsum.photos/300/300?random=405&electronics" alt="Xiaomi Case" />
+            <h3>Xiaomi Case</h3>
+            <p>Affordable and protective case for Xiaomi phones.</p>
+            <div class="price">$15.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Xiaomi Case">Buy Now</a>
+          </div>
+          <!-- Category: Earbuds (5 products) -->
+          <div class="product-card" data-category="Earbuds">
+            <img src="https://picsum.photos/300/300?random=501&electronics" alt="AirPods Pro" />
+            <h3>AirPods Pro</h3>
+            <p>Premium true wireless earbuds with noise cancellation.</p>
+            <div class="price">$249.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in AirPods Pro">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Earbuds">
+            <img src="https://picsum.photos/300/300?random=502&electronics" alt="Galaxy Buds" />
+            <h3>Galaxy Buds</h3>
+            <p>High-quality wireless earbuds from Samsung.</p>
+            <div class="price">$149.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Galaxy Buds">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Earbuds">
+            <img src="https://picsum.photos/300/300?random=503&electronics" alt="Sony WF-1000XM4" />
+            <h3>Sony WF-1000XM4</h3>
+            <p>Industry-leading noise cancellation in a true wireless design.</p>
+            <div class="price">$279.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Sony WF-1000XM4">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Earbuds">
+            <img src="https://picsum.photos/300/300?random=504&electronics" alt="Jabra Elite 75t" />
+            <h3>Jabra Elite 75t</h3>
+            <p>Compact earbuds with excellent sound and call quality.</p>
+            <div class="price">$199.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Jabra Elite 75t">Buy Now</a>
+          </div>
+          <div class="product-card" data-category="Earbuds">
+            <img src="https://picsum.photos/300/300?random=505&electronics" alt="Anker Soundcore Liberty" />
+            <h3>Anker Soundcore Liberty</h3>
+            <p>Budget-friendly wireless earbuds with impressive battery life.</p>
+            <div class="price">$99.99</div>
+            <a class="buy-btn" href="https://wa.me/250780611095?text=I'm interested in Anker Soundcore Liberty">Buy Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about">
+      <h2>About Us</h2>
+      <div style="max-width: 800px; margin: 0 auto; text-align: center; color: #333;">
+        <p>Welcome to Electronics Empire, your one-stop shop for the latest in laptops, electronics, and accessories. We are dedicated to quality, innovation, and outstanding customer service. Explore our extensive range of products and discover the perfect device to enhance your work and play.</p>
+      </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+      <h2>Contact Us</h2>
+      <div class="contact-info">
+        <p><strong>Tel:</strong> 0782487331</p>
+        <p><strong>Email:</strong> <a href="mailto:byiringirofelix5@gmail.com" style="color:#FF9900;">byiringirofelix5@gmail.com</a></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Electronics Empire. All Rights Reserved.</p>
+  </footer>
+
+  <!-- FLOATING CALL & CHAT BUTTONS -->
+  <div class="floating-buttons">
+    <a href="tel:0782487331" class="floating-button" title="Call Now"><i class="fas fa-phone"></i></a>
+    <a href="https://wa.me/250780611095" class="floating-button" title="Chat with Us"><i class="fab fa-whatsapp"></i></a>
+  </div>
+
+  <!-- JAVASCRIPT for Mobile Navigation, Filtering, and Search -->
+  <script>
+    // Mobile Navigation Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-menu');
+
+    hamburger.addEventListener('click', () => {
+      if (navMenu.style.display === 'flex') {
+        navMenu.style.display = 'none';
+      } else {
+        navMenu.style.display = 'flex';
+        navMenu.style.flexDirection = 'column';
+      }
+    });
+    document.querySelectorAll('#nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          navMenu.style.display = 'none';
+        }
+      });
+    });
+
+    // Filtering Functionality
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const productCards = document.querySelectorAll('.product-card');
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filterValue = btn.getAttribute('data-filter');
+        productCards.forEach(card => {
+          if (filterValue === 'all') {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = (card.getAttribute('data-category') === filterValue) ? 'flex' : 'none';
+          }
+        });
+      });
+    });
+
+    // Advanced Search Functionality
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+
+    searchBtn.addEventListener('click', () => {
+      const query = searchInput.value.toLowerCase();
+      productCards.forEach(card => {
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        if (title.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    });
+    
+    // Optionally, trigger search on Enter key
+    searchInput.addEventListener('keypress', (e) => {
+      if(e.key === 'Enter'){
+        searchBtn.click();
+      }
+    });
+  </script>
+</body>
+</html>
